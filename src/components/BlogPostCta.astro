@@ -1,0 +1,53 @@
+---
+import Icon from './icons/Icon.astro';
+import { Button } from '@/components/starwind/button';
+import { useLocale } from '../i18n';
+import { localizePath } from '../i18n/paths';
+import type { SiteLocale } from '../i18n/locales';
+import {
+  HWID_CHECKOUT_PATH,
+  PRIMARY_CHECKOUT_PATH,
+  SKIN_CHANGER_CHECKOUT_PATH,
+  UGC_CHECKOUT_PATH,
+  resolveCheckoutHref,
+} from '../config/checkout';
+import { HWID_SPOOFER_PATH, PRODUCT_BASE, SKIN_CHANGER_PATH, UGC_PATH } from '../config/site';
+
+interface Props {
+  title: string;
+  html: string;
+  href: string;
+}
+
+const { title, html, href } = Astro.props;
+const { t, locale } = useLocale(Astro.currentLocale);
+
+function pathKey(path: string): string {
+  const bare = path.split(/[?#]/)[0].replace(/\/$/, '') || '/';
+  return bare;
+}
+
+const PRODUCT_CTA_HREF: Record<string, string> = {
+  [pathKey(PRODUCT_BASE)]: PRIMARY_CHECKOUT_PATH,
+  [pathKey(SKIN_CHANGER_PATH)]: SKIN_CHANGER_CHECKOUT_PATH,
+  [pathKey(HWID_SPOOFER_PATH)]: HWID_CHECKOUT_PATH,
+  [pathKey(UGC_PATH)]: UGC_CHECKOUT_PATH,
+};
+
+const resolvedHref = resolveCheckoutHref(PRODUCT_CTA_HREF[pathKey(href)] ?? href);
+const checkoutHref = localizePath(resolvedHref, locale as SiteLocale);
+---
+
+<aside class="blog-post-cta not-prose not-sw-prose my-8" aria-label={title}>
+  <div class="blog-post-cta__icon" aria-hidden="true">
+    <Icon name="package" size={20} />
+  </div>
+  <div class="blog-post-cta__body">
+    <h3 class="blog-post-cta__title">{title}</h3>
+    <div class="blog-post-cta__text" set:html={html} />
+    <Button as="a" href={checkoutHref} variant="primary" size="md" class="blog-post-cta__btn w-full sm:w-auto">
+      {t.products.buyNow}
+      <Icon name="arrowRight" size={16} />
+    </Button>
+  </div>
+</aside>

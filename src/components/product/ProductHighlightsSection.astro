@@ -1,0 +1,72 @@
+---
+import type { ProductPage } from '../../data/products';
+import SectionHeader from '../SectionHeader.astro';
+import Icon from '../icons/Icon.astro';
+import { Button } from '@/components/starwind/button';
+import { Badge } from '@/components/starwind/badge';
+import { useLocale } from '../../i18n';
+
+interface Props {
+  product: ProductPage;
+  productName: string;
+  header?: { eyebrow: string; title: string; desc: string };
+  moreNote?: string;
+}
+
+const { product, productName, header, moreNote } = Astro.props;
+const { t } = useLocale(Astro.currentLocale);
+
+const copy = {
+  eyebrow: 'At a glance',
+  title: 'Key capabilities',
+  desc: `The short list for ${productName}, before the full module list.`,
+  more: 'Another {count} options are in the full list below.',
+  allModules: 'All modules',
+};
+---
+
+<section
+  class="border-b border-border bg-muted/20 py-12 md:py-16"
+  aria-labelledby="product-highlights-title"
+>
+  <div class="mx-auto max-w-6xl px-5">
+    <SectionHeader
+      eyebrow={header?.eyebrow ?? copy.eyebrow}
+      title={header?.title ?? copy.title}
+      desc={header?.desc ?? copy.desc}
+      titleId="product-highlights-title"
+    />
+
+    <div class="product-detail__inline-row mt-10 flex flex-wrap gap-2.5 md:gap-3" data-reveal-stagger>
+      {
+        product.features.map((feature) => (
+          <Badge variant="outline" size="lg" class="rounded-full px-4 py-2 text-sm font-medium leading-snug">
+            {feature}
+          </Badge>
+        ))
+      }
+    </div>
+
+    {
+      product.more > 0 && (
+        <p class="product-detail__text-center mt-6 text-sm text-muted-foreground" data-reveal>
+          {(moreNote ?? copy.more).replace(
+            '{count}',
+            String(product.more),
+          )}
+        </p>
+      )
+    }
+
+    <div class="product-detail__inline-row mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:justify-center" data-reveal>
+      <Button type="button" data-scroll-target="product-features" variant="outline" size="sm" class="w-full rounded-full sm:w-auto">
+        {copy.allModules}
+        <Icon name="chevronDown" size={16} />
+      </Button>
+      <Button as="a" href={product.buyUrl} variant="primary" size="sm" class="w-full rounded-full sm:w-auto">
+        {t.products.buyNow}
+        <Icon name="arrowRight" size={16} />
+      </Button>
+    </div>
+  </div>
+</section>

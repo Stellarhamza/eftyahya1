@@ -1,0 +1,30 @@
+{
+  "name": "EFT Cheats",
+  "short_name": "EFT",
+  "description": "Escape from Tarkov cheats, HWID spoofer, skin changer, and support on eft-cheats.net.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0614",
+  "theme_color": "#0a0614",
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/images/brand/apple-touch-icon.png?v=12",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/brand/brand-logo-512.webp?v=12",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/brand/favicon-32.png?v=12",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

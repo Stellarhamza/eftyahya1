@@ -1,0 +1,26 @@
+---
+import { BRAND_LOGO_ALT, FAVICON_32 } from '../config/brand';
+
+interface Props {
+  /** Rendered CSS pixel size (width and height). */
+  size?: number;
+  class?: string;
+  /** Header / above-the-fold: eager load, no lazy. */
+  priority?: boolean;
+  /** Override default artwork-only alt (e.g. page keyword prefix). */
+  alt?: string;
+}
+
+const { size = 32, class: className, priority = false, alt = BRAND_LOGO_ALT } = Astro.props;
+---
+
+<img
+  src={FAVICON_32}
+  alt={alt}
+  width={size}
+  height={size}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'low'}
+  decoding="async"
+  class={className}
+/>
